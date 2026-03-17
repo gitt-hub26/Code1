@@ -137,6 +137,102 @@ def account():
     orders = Order.query.filter_by(customer_id=customer_id).order_by(Order.created_at.desc()).all()
     return render_template('account.html', customer=customer, orders=orders)
 
+@app.route('/producer/products')
+def producer_products():
+    if 'producer_id' not in session:
+        return redirect(url_for('producer_login'))
+
+    products = Product.query.filter_by(producer_id=session['producer_id']).all()
+    return render_template('producer/products.html', products=products)
+
+@app.route('/producer/products/add', methods=['GET', 'POST'])
+def producer_add_product():
+    if 'producer_id' not in session:
+        return redirect(url_for('producer_login'))
+
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        price = Decimal(request.form['price'])
+        stock = int(request.form['stock'])
+        category_id = int(request.form['category'])
+
+        product = Product(
+            name=name,
+            description=description,
+            price=price,
+            stock=stock,
+            category_id=category_id,
+            producer_id=session['producer_id']
+        )
+        db.session.add(product)
+        db.session.commit()
+
+        return redirect(url_for('producer_products'))
+
+    categories = Category.query.all()
+    return render_template('producer/add_product.html', categories=categories)
+
+@app.route('/producer/products/edit/<int:product_id>', methods=['GET', 'POST'])
+def producer_edit_product(product_id):
+    if 'producer_id' not in session:
+        return redirect(url_for('producer_login'))
+
+    product = Product.query.get_or_404(product_id)
+
+    if request.method == 'POST':
+        product.name = request.form['name']
+        product.description = request.form['description']
+        product.price = Decimal(request.form['price'])
+        product.stock = int(request.form['stock'])
+        product.category_id = int(request.form['category'])
+
+        db.session.commit()
+        return redirect(url_for('producer_products'))
+
+    categories = Category.query.all()
+    return render_template('producer/edit_product.html', product=product, categories=categories)
+
+@app.route('/producer/products/delete/<int:product_id>', methods=['POST'])
+def producer_delete_product(product_id):
+    if 'producer_id' not in session:
+        return redirect(url_for('producer_login'))
+
+    product = Product.query.get_or_404(product_id)
+    db.session.delete(product)
+    db.session.commit()
+
+    return redirect(url_for('producer_products'))
+
+@app.route('/producer/orders')
+def producer_orders():
+    if 'producer_id' not in session:
+        return redirect(url_for('producer_login'))
+
+    orders = (
+        Order.query
+        .join(OrderItem)
+        .join(Product)
+        .filter(Product.producer_id == session['producer_id'])
+        .order_by(Order.created_at.desc())
+        .all()
+    )
+
+    return render_template('producer/orders.html', orders=orders)
+
+@app.route('/producer/orders/update/<int:order_id>', methods=['POST'])
+def producer_update_order(order_id):
+    if 'producer_id' not in session:
+        return redirect(url_for('producer_login'))
+
+    order = Order.query.get_or_404(order_id)
+    new_status = request.form['status']
+
+    order.status = new_status
+    db.session.commit()
+
+    return redirect(url_for('producer_orders'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
