@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkout</h2>
+<p>Complete your order</p>
+
+<h4>Enter payment details</h4>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    <label class="form-label">Card Number</label>
+    {{ form.card_number(class="form-control") }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Expiry Date</label>
+    {{ form.expiry_date(class="form-control") }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">CVC</label>
+    {{ form.cvc(class="form-control") }}
+  </div>
+  <button type="submit" class="btn btn-warning">Place Order</button>
+</form>
+{% endblock %}
