@@ -2,6 +2,9 @@ greenfield/
   app.py
   models.py
   forms.py
+  static/
+    style.css
+    main.js
   templates/
     base.html
     home.html
