@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkout</h2>
+<p>Complete your order</p>
+
+<form method="post">
+  {{ form.hidden_tag() }}
+  <h4>Choose delivery method</h4>
+  <div class="mb-3">
+    {% for subfield in form.method %}
+      <div class="form-check">
+        {{ subfield(class="form-check-input") }}
+        <label class="form-check-label">{{ subfield.label.text }}</label>
+      </div>
+    {% endfor %}
+  </div>
+
+  <h4>Order summary</h4>
+  <p>Items £{{ '%.2f'|format(items_total) }}</p>
+  <p>Delivery £{{ '%.2f'|format(delivery_cost) }}</p>
+  <p class="fw-bold">Total £{{ '%.2f'|format(total) }}</p>
+
+  <button type="submit" class="btn btn-warning">Next</button>
+</form>
+{% endblock %}
