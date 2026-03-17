@@ -1,21 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Shop</h2>
-<div class="row">
-  {% for product in products %}
-  <div class="col-md-4 mb-4">
-    <div class="card h-100">
-      <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="{{ product.name }}">
-      <div class="card-body">
-        <h5 class="card-title">{{ product.name }}</h5>
-        <p class="card-text">{{ product.description }}</p>
-        <p class="fw-bold">£{{ '%.2f'|format(product.price) }}</p>
-        <a href="{{ url_for('add_to_basket', product_id=product.id) }}" class="btn btn-warning">
-          Add to Basket
-        </a>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
+<h2>My Basket</h2>
+{% if items %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th><th>Price</th><th>Quantity</th><th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.product.name }}</td>
+        <td>£{{ '%.2f'|format(item.product.price) }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>£{{ '%.2f'|format(item.line_total) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p style="text-align:right;"><strong>Subtotal £{{ '%.2f'|format(subtotal) }}</strong></p>
+  <form method="post">
+    <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+  </form>
+{% else %}
+  <p>Your basket is empty.</p>
+{% endif %}
 {% endblock %}
