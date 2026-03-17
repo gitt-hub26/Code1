@@ -10,7 +10,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///greenfield.db'
 app.config['SECRET_KEY'] = 'change-me'
 db.init_app(app)
 
-# Simple in-session basket: {product_id: quantity}
 def get_basket():
     return session.get('basket', {})
 
@@ -58,7 +57,6 @@ def checkout_delivery():
     if not basket:
         return redirect(url_for('shop'))
     form = DeliveryForm()
-    # simple totals
     items_total = Decimal('0.00')
     for pid, qty in basket.items():
         product = Product.query.get(int(pid))
@@ -85,12 +83,11 @@ def checkout_payment():
     basket = get_basket()
     if not basket:
         return redirect(url_for('shop'))
-    form = PaymentForm()
     totals = session.get('order_totals')
     if not totals:
         return redirect(url_for('checkout_delivery'))
+    form = PaymentForm()
     if form.validate_on_submit():
-        # assume logged-in customer
         customer_id = session.get('customer_id')
         if not customer_id:
             return redirect(url_for('login'))
@@ -121,9 +118,7 @@ def checkout_payment():
         )
         delivery = Delivery(
             order_id=order.id,
-            method='Address' if session.get('delivery_method') == 'address' else 'Pickup',
-            address=None,
-            pickup_point=None,
+            method=session.get('delivery_method'),
             status='Pending'
         )
         db.session.add(payment)
