@@ -2,27 +2,31 @@
 {% block content %}
 <h2>My Account</h2>
 
-<h4>Personal information</h4>
-<p><strong>Name:</strong> {{ customer.full_name }}</p>
-<p><strong>Email:</strong> {{ customer.email }}</p>
-<p><strong>Address:</strong> {{ customer.address }}</p>
+<section class="card">
+  <h3>Personal information</h3>
+  <p><strong>Name:</strong> {{ customer.full_name }}</p>
+  <p><strong>Email:</strong> {{ customer.email }}</p>
+  <p><strong>Address:</strong> {{ customer.address }}</p>
+</section>
 
-<h4 class="mt-4">Order history</h4>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Order</th><th>Date</th><th>Status</th><th>Amount</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for order in orders %}
-    <tr>
-      <td>{{ order.order_number }}</td>
-      <td>{{ order.created_at.strftime('%d %b %Y') }}</td>
-      <td>{{ order.status }}</td>
-      <td>£{{ '%.2f'|format(order.total_amount) }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<section class="card" style="margin-top:1.5rem;">
+  <h3>Order history</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order</th><th>Date</th><th>Status</th><th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.order_number }}</td>
+        <td>{{ order.created_at.strftime('%d %b %Y') }}</td>
+        <td>{{ order.status }}</td>
+        <td>£{{ '%.2f'|format(order.total_amount) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
 {% endblock %}
