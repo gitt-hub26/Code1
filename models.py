@@ -20,7 +20,7 @@ class Product(db.Model):
     description = db.Column(db.Text)
     price = db.Column(db.Numeric(10, 2), nullable=False)
     producer_id = db.Column(db.Integer, db.ForeignKey('producer.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     stock = db.Column(db.Integer, default=0)
 
 class Customer(db.Model):
@@ -67,7 +67,7 @@ class Payment(db.Model):
 class Delivery(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-    method = db.Column(db.String(50))  # 'Address' or 'Pickup'
+    method = db.Column(db.String(50))  # 'address' or 'pickup'
     address = db.Column(db.String(255))
     pickup_point = db.Column(db.String(255))
     status = db.Column(db.String(50), default='Pending')
