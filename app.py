@@ -147,6 +147,16 @@ def login():
             return redirect(url_for('account'))
     return render_template('login.html', form=form)
 
+@app.route('/producer/login', methods=['GET', 'POST'])
+def producer_login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        producer = Producer.query.filter_by(email=form.email.data).first()
+        if producer and check_password_hash(producer.password_hash, form.password.data):
+            session['producer_id'] = producer.id
+            return redirect(url_for('producer_products'))
+    return render_template('producer/login.html', form=form)
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
