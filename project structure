@@ -1,0 +1,14 @@
+greenfield/
+  app.py
+  models.py
+  forms.py
+  templates/
+    base.html
+    home.html
+    shop.html
+    basket.html
+    checkout_delivery.html
+    checkout_payment.html
+    account.html
+    login.html
+    signup.html
