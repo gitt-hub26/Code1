@@ -3,23 +3,23 @@
 <h2>Checkout</h2>
 <p>Complete your order</p>
 
-<form method="post">
+<form method="post" class="card">
   {{ form.hidden_tag() }}
-  <h4>Choose delivery method</h4>
-  <div class="mb-3">
+  <h3>Choose delivery method</h3>
+  <div class="form-group">
     {% for subfield in form.method %}
-      <div class="form-check">
-        {{ subfield(class="form-check-input") }}
-        <label class="form-check-label">{{ subfield.label.text }}</label>
-      </div>
+      <label>
+        {{ subfield() }}
+        {{ subfield.label.text }}
+      </label><br>
     {% endfor %}
   </div>
 
-  <h4>Order summary</h4>
+  <h3>Order summary</h3>
   <p>Items £{{ '%.2f'|format(items_total) }}</p>
   <p>Delivery £{{ '%.2f'|format(delivery_cost) }}</p>
-  <p class="fw-bold">Total £{{ '%.2f'|format(total) }}</p>
+  <p><strong>Total £{{ '%.2f'|format(total) }}</strong></p>
 
-  <button type="submit" class="btn btn-warning">Next</button>
+  <button type="submit" class="btn btn-primary">Next</button>
 </form>
 {% endblock %}
