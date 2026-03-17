@@ -3,21 +3,24 @@
 <h2>Checkout</h2>
 <p>Complete your order</p>
 
-<h4>Enter payment details</h4>
-<form method="post">
-  {{ form.hidden_tag() }}
-  <div class="mb-3">
-    <label class="form-label">Card Number</label>
-    {{ form.card_number(class="form-control") }}
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Expiry Date</label>
-    {{ form.expiry_date(class="form-control") }}
-  </div>
-  <div class="mb-3">
-    <label class="form-label">CVC</label>
-    {{ form.cvc(class="form-control") }}
-  </div>
-  <button type="submit" class="btn btn-warning">Place Order</button>
-</form>
+<section class="card">
+  <h3>Enter payment details</h3>
+  <p>Credit / Debit Card</p>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <label>Card Number</label>
+      {{ form.card_number() }}
+    </div>
+    <div class="form-group">
+      <label>Expiry Date</label>
+      {{ form.expiry_date() }}
+    </div>
+    <div class="form-group">
+      <label>CVC</label>
+      {{ form.cvc() }}
+    </div>
+    <button type="submit" class="btn btn-primary">Place Order</button>
+  </form>
+</section>
 {% endblock %}
